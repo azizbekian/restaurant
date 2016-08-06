@@ -1,0 +1,7 @@
+<resources>
+
+    <dimen name="screen_padding">@dimen/spacing_larger</dimen>
+
+    <integer name="span_tables">4</integer>
+
+</resources>

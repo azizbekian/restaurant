@@ -1,0 +1,137 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
+
+android {
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
+
+    defaultConfig {
+        applicationId versions.applicationId
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode versions.versionCode
+        versionName versions.versionName
+        testInstrumentationRunner versions.applicationId + ".runner.RxAndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    signingConfigs {
+        release {
+            storeFile file(credentials.storeFile)
+            storePassword credentials.storePassword
+            keyAlias credentials.keyAlias
+            keyPassword credentials.keyPassword
+        }
+    }
+    buildTypes {
+        debug {
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        def commonTestDir = 'src/commonTest/java'
+        test {
+            java.srcDir commonTestDir
+        }
+        androidTest {
+            java.srcDir commonTestDir
+        }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+    packagingOptions {
+        exclude 'cglib-license.txt'
+        exclude 'org/mockito/internal/matchers/apachecommons/commons-lang-license.txt'
+        exclude 'asm-license.txt'
+    }
+}
+
+dependencies {
+
+    // Google
+    compile libraries.supportAppCompat
+    compile libraries.supportV4
+    compile libraries.recyclerview
+    compile libraries.dagger
+    compile libraries.daggerCompiler
+
+    // Square
+    compile libraries.retrofit
+    compile libraries.retrofitRxJava
+    compile libraries.retrofitGson
+    compile libraries.okhttpInterceptor
+    compile libraries.sqlBrite
+
+    // Rx
+    compile libraries.rxJava
+    compile libraries.rxAndroid
+
+    // Jake Wharton
+    compile libraries.timber
+    compile libraries.rxBindingV7
+    compile libraries.butterknife
+    apt libraries.butterknifeCompiler
+
+    // Misc
+    compile libraries.javaxAnnotation
+    compile libraries.multidex
+
+    // AutoValue
+    provided libraries.autoValueAnnotations
+    apt libraries.autoValue
+    apt libraries.autoValueParcel
+    apt libraries.autoValueGson
+
+    // Development
+    debugCompile libraries.stetho
+    debugCompile libraries.stethoOkHttp
+
+    // Testing
+    testCompile libraries.jUnit
+    testCompile libraries.mockito
+    testCompile libraries.hamcrest
+    testCompile libraries.powermockModule
+    testCompile libraries.powermockApi
+    androidTestCompile libraries.jUnit
+    androidTestCompile libraries.mockito
+    androidTestCompile libraries.supportRunner
+    androidTestCompile libraries.supportRunnerRules
+    androidTestCompile libraries.espressoCore
+    androidTestCompile(libraries.espressoContrib) {
+        exclude module: 'recyclerview-v7'
+        exclude module: 'design'
+    }
+    androidTestCompile libraries.dexmaker
+    androidTestCompile libraries.dexmakerMockito
+}
+
+/*
+Resolves dependency versions across test and production APKs, specifically, transitive
+dependencies. This is required since Espresso internally has a dependency on support-annotations.
+*/
+configurations.all {
+    resolutionStrategy.force "com.android.support:support-annotations:$versions.supportLibs"
+}
+
+/*
+All direct/transitive dependencies shared between your test and production APKs need to be
+excluded from the test APK! This is necessary because both APKs will contain the same classes. Not
+excluding these dependencies from your test configuration will result in an dex pre-verifier error
+at runtime. More info in this tools bug: (https://code.google.com/p/android/issues/detail?id=192497)
+*/
+configurations.compile.dependencies.each { compileDependency ->
+    println "Excluding compile dependency: ${compileDependency.getName()}"
+    configurations.androidTestCompile.dependencies.each { androidTestCompileDependency ->
+        configurations.androidTestCompile.exclude module: "${compileDependency.getName()}"
+    }
+}

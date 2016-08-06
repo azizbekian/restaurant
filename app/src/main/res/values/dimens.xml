@@ -1,0 +1,30 @@
+<resources>
+
+    <dimen name="screen_padding">@dimen/spacing_normal</dimen>
+
+    <!-- typical spacing between two views -->
+    <dimen name="spacing_huge">48dp</dimen>
+    <dimen name="spacing_bigger">36dp</dimen>
+    <dimen name="spacing_big">30dp</dimen>
+    <dimen name="spacing_larger">24dp</dimen>
+    <dimen name="spacing_large">20dp</dimen>
+    <dimen name="spacing_normal">16dp</dimen>
+    <dimen name="spacing_small">12dp</dimen>
+    <dimen name="spacing_smaller">8dp</dimen>
+    <dimen name="spacing_tiny">4dp</dimen>
+
+    <!-- font sizes -->
+    <dimen name="font_huge">24sp</dimen>
+    <dimen name="font_bigger">22sp</dimen>
+    <dimen name="font_big">20sp</dimen>
+    <dimen name="font_larger">18sp</dimen>
+    <dimen name="font_large">16sp</dimen>
+    <dimen name="font_normal">14sp</dimen>
+    <dimen name="font_small">12sp</dimen>
+    <dimen name="font_smaller">10sp</dimen>
+    <dimen name="font_tiny">8sp</dimen>
+
+    <integer name="span_tables">3</integer>
+
+
+</resources>

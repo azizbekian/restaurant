@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">QuandooTask</string>
+
+    <string name="dialog_error_title">Sorry</string>
+    <string name="dialog_error_message_internet">No network connection :-(</string>
+    <string name="dialog_error_message_server">Something went wrong. Try later :-(</string>
+    <string name="dialog_confirm_title">Confirm</string>
+    <string name="dialog_confirm_message" formatted="false">Reserve this table for %s %s?</string>
+    <string name="dialog_action_ok">OK</string>
+    <string name="dialog_action_no">NO</string>
+
+    <string name="empty_customers">There aren\'t any customers.</string>
+    <string name="search">Search</string>
+    <string name="toast_reserved" formatted="false">Tables %d is reserved.</string>
+
+</resources>

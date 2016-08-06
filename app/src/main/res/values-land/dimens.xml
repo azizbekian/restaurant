@@ -1,0 +1,5 @@
+<resources>
+
+    <integer name="span_tables">5</integer>
+
+</resources>
